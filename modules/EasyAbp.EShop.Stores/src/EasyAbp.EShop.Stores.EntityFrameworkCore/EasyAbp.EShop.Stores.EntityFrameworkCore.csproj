@@ -12,8 +12,4 @@
     <ProjectReference Include="..\EasyAbp.EShop.Stores.Domain\EasyAbp.EShop.Stores.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EasyAbp\EShop\Stores" />
-  </ItemGroup>
-
 </Project>

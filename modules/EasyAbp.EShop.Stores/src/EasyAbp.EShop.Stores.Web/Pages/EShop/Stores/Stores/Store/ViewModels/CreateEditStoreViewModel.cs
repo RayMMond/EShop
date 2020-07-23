@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace EasyAbp.EShop.Stores.Web.Pages.EShop.Stores.Stores.Store.ViewModels
 {
@@ -7,5 +10,10 @@ namespace EasyAbp.EShop.Stores.Web.Pages.EShop.Stores.Stores.Store.ViewModels
         [Required]
         [Display(Name = "StoreName")]
         public string Name { get; set; }
+
+
+        [SelectItems("StoreOwners")]
+        [Display(Name = "StoreOwner")]
+        public List<Guid> OwnerIds { get; set; }
     }
 }
