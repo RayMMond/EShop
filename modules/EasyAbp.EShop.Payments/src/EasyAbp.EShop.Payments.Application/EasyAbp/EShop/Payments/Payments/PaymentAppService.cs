@@ -7,6 +7,7 @@ using EasyAbp.EShop.Orders.Orders.Dtos;
 using EasyAbp.EShop.Payments.Authorization;
 using EasyAbp.EShop.Payments.Payments;
 using EasyAbp.EShop.Payments.Payments.Dtos;
+using EasyAbp.EShop.Stores.Permissions;
 using EasyAbp.PaymentService.Payments;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
@@ -75,7 +76,9 @@ namespace EasyAbp.EShop.Payments.Payments
 
                 if (input.StoreId.HasValue)
                 {
-                    // Todo: Check if current user is an admin of the store.
+                    await AuthorizationService.CheckAsync(null,
+                        new StorePermissionAuthorizationRequirement(input.StoreId.Value,
+                            PaymentsPermissions.Payments.Manage));
                 }
                 else
                 {

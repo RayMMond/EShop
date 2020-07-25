@@ -1,4 +1,7 @@
-﻿using Volo.Abp.Application;
+﻿using EasyAbp.EShop.Stores.Permissions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Application;
 using Volo.Abp.Modularity;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Authorization;
@@ -14,6 +17,8 @@ namespace EasyAbp.EShop.Stores
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            context.Services.AddSingleton<IAuthorizationHandler, BasicStorePermissionAuthorizationHandler>();
+
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<EShopStoresApplicationContractsModule>("EasyAbp.EShop.Stores");

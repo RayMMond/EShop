@@ -37,16 +37,6 @@ namespace EasyAbp.EShop.Stores.Stores
             return store;
         }
 
-        public Task DeleteAsync(Store store)
-        {
-            return _storeRepository.DeleteAsync(store);
-        }
-
-        public Task DeleteAsync(Guid id)
-        {
-            return _storeRepository.DeleteAsync(id);
-        }
-
         protected virtual async Task UpdateStoreOwnersAsync(Guid storeId, IEnumerable<Guid> ownerIds)
         {
             ownerIds ??= new List<Guid>();
@@ -61,7 +51,7 @@ namespace EasyAbp.EShop.Stores.Stores
             foreach (var ownerId in ownerIds.Except(storeOwners.Select(x => x.OwnerId).ToList()))
             {
                 await _storeOwnerRepository.InsertAsync(
-                    new StoreOwner(GuidGenerator.Create(), ownerId, ownerId, CurrentTenant.Id), true);
+                    new StoreOwner(GuidGenerator.Create(), storeId, ownerId, CurrentTenant.Id), true);
             }
         }
     }

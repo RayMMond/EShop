@@ -6,6 +6,7 @@ using EasyAbp.EShop.Products.Permissions;
 using EasyAbp.EShop.Products.Products.Dtos;
 using EasyAbp.EShop.Products.ProductStores;
 using EasyAbp.EShop.Products.ProductTypes;
+using EasyAbp.EShop.Stores.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -240,8 +241,8 @@ namespace EasyAbp.EShop.Products.Products
         {
             await CheckGetListPolicyAsync();
 
-            // Todo: Check if current user is an admin of the store.
-            var isCurrentUserStoreAdmin = true && await AuthorizationService.IsGrantedAsync(ProductsPermissions.Products.Default);
+            var isCurrentUserStoreAdmin = await AuthorizationService.IsGrantedAsync(null,
+                new StorePermissionAuthorizationRequirement(input.StoreId, ProductsPermissions.Products.Default));
 
             if (input.ShowHidden && !isCurrentUserStoreAdmin)
             {

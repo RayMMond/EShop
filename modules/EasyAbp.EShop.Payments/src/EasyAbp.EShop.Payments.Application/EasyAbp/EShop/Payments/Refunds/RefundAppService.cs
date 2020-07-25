@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.EShop.Payments.Authorization;
 using EasyAbp.EShop.Payments.Payments;
 using EasyAbp.EShop.Payments.Refunds.Dtos;
+using EasyAbp.EShop.Stores.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -66,7 +67,9 @@ namespace EasyAbp.EShop.Payments.Refunds
 
                 if (input.StoreId.HasValue)
                 {
-                    // Todo: Check if current user is an admin of the store.
+                    await AuthorizationService.CheckAsync(null,
+                        new StorePermissionAuthorizationRequirement(input.StoreId.Value,
+                            PaymentsPermissions.Refunds.Manage));
                 }
                 else
                 {

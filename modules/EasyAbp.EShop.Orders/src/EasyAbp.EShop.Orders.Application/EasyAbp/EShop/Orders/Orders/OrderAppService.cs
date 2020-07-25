@@ -6,6 +6,7 @@ using EasyAbp.EShop.Orders.Authorization;
 using EasyAbp.EShop.Orders.Orders.Dtos;
 using EasyAbp.EShop.Products.Products;
 using EasyAbp.EShop.Products.Products.Dtos;
+using EasyAbp.EShop.Stores.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -71,7 +72,9 @@ namespace EasyAbp.EShop.Orders.Orders
 
                 if (input.StoreId.HasValue)
                 {
-                    // Todo: Check if current user is an admin of the store.
+                    await AuthorizationService.CheckAsync(null,
+                        new StorePermissionAuthorizationRequirement(input.StoreId.Value,
+                            OrdersPermissions.Orders.Manage));
                 }
                 else
                 {
@@ -90,9 +93,9 @@ namespace EasyAbp.EShop.Orders.Orders
 
             if (order.CustomerUserId != CurrentUser.GetId())
             {
-                await AuthorizationService.CheckAsync(OrdersPermissions.Orders.Manage);
-
-                // Todo: Check if current user is an admin of the store.
+                await AuthorizationService.CheckAsync(null,
+                    new StorePermissionAuthorizationRequirement(order.StoreId,
+                        OrdersPermissions.Orders.Manage));
             }
             
             return MapToGetOutputDto(order);
@@ -153,9 +156,9 @@ namespace EasyAbp.EShop.Orders.Orders
 
             if (order.CustomerUserId != CurrentUser.GetId())
             {
-                await AuthorizationService.CheckAsync(OrdersPermissions.Orders.Manage);
-
-                // Todo: Check if current user is an admin of the store.
+                await AuthorizationService.CheckAsync(null,
+                    new StorePermissionAuthorizationRequirement(order.StoreId,
+                        OrdersPermissions.Orders.Manage));
             }
             
             return MapToGetOutputDto(order);
@@ -168,9 +171,9 @@ namespace EasyAbp.EShop.Orders.Orders
             
             if (order.CustomerUserId != CurrentUser.GetId())
             {
-                await AuthorizationService.CheckAsync(OrdersPermissions.Orders.Manage);
-
-                // Todo: Check if current user is an admin of the store.
+                await AuthorizationService.CheckAsync(null,
+                    new StorePermissionAuthorizationRequirement(order.StoreId,
+                        OrdersPermissions.Orders.Manage));
             }
 
             order = await _orderManager.CompleteAsync(order);

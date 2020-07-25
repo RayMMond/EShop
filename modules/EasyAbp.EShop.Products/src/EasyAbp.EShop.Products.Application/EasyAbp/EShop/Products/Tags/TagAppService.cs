@@ -4,9 +4,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Linq;
+using EasyAbp.EShop.Stores.Permissions;
 
 namespace EasyAbp.EShop.Products.Tags
 {
@@ -41,7 +43,8 @@ namespace EasyAbp.EShop.Products.Tags
 
             var entity = await GetEntityByIdAsync(id);
 
-            await CheckCurrentUserIsStoreOwner(entity.StoreId, CurrentUser.Id);
+            await AuthorizationService.CheckAsync(entity,
+                new StorePermissionAuthorizationRequirement(entity.StoreId, GetPolicyName));
 
             return MapToGetOutputDto(entity);
         }
@@ -50,7 +53,8 @@ namespace EasyAbp.EShop.Products.Tags
         {
             await CheckGetListPolicyAsync();
 
-            await CheckCurrentUserIsStoreOwner(input.StoreId, CurrentUser.Id);
+            await AuthorizationService.CheckAsync(null,
+                new StorePermissionAuthorizationRequirement(input.StoreId, GetListPolicyName));
 
             var query = CreateFilteredQuery(input);
 
@@ -70,9 +74,10 @@ namespace EasyAbp.EShop.Products.Tags
         {
             await CheckCreatePolicyAsync();
 
-            await CheckCurrentUserIsStoreOwner(input.StoreId, CurrentUser.Id);
-
             var entity = MapToEntity(input);
+
+            await AuthorizationService.CheckAsync(entity,
+                new StorePermissionAuthorizationRequirement(entity.StoreId, CreatePolicyName));
 
             TryToSetTenantId(entity);
 
@@ -87,7 +92,8 @@ namespace EasyAbp.EShop.Products.Tags
 
             var entity = await GetEntityByIdAsync(id);
 
-            await CheckCurrentUserIsStoreOwner(entity.StoreId, CurrentUser.Id);
+            await AuthorizationService.CheckAsync(entity,
+                new StorePermissionAuthorizationRequirement(entity.StoreId, UpdatePolicyName));
 
             MapToEntity(input, entity);
             await Repository.UpdateAsync(entity, autoSave: true);
@@ -101,15 +107,10 @@ namespace EasyAbp.EShop.Products.Tags
 
             var entity = await GetEntityByIdAsync(id);
 
-            await CheckCurrentUserIsStoreOwner(entity.StoreId, CurrentUser.Id);
+            await AuthorizationService.CheckAsync(entity,
+                new StorePermissionAuthorizationRequirement(entity.StoreId, DeletePolicyName));
 
             await DeleteByIdAsync(id);
-        }
-
-        protected virtual Task CheckCurrentUserIsStoreOwner(Guid storeId, Guid? userId)
-        {
-            //TODO: check if current user id owner of store
-            return Task.CompletedTask;
         }
     }
 }

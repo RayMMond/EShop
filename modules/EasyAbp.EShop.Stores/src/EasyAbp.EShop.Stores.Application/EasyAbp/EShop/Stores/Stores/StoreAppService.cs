@@ -37,5 +37,18 @@ namespace EasyAbp.EShop.Stores.Stores
 
             return MapToGetOutputDto(entity);
         }
+
+        public override async Task<StoreDto> UpdateAsync(Guid id, CreateUpdateStoreDto input)
+        {
+            await CheckUpdatePolicyAsync();
+
+            var entity = await GetEntityByIdAsync(id);
+
+            MapToEntity(input, entity);
+
+            entity = await _storeManager.UpdateAsync(entity, input.OwnerIds);
+
+            return MapToGetOutputDto(entity);
+        }
     }
 }

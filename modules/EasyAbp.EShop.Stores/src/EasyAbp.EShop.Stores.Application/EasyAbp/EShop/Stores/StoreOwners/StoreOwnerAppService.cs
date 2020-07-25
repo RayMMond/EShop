@@ -42,5 +42,13 @@ namespace EasyAbp.EShop.Stores.StoreOwners
         {
             throw new NotSupportedException();
         }
+
+        [RemoteService(false)]
+        public async Task<bool> IsStoreOwnerAsync(Guid storeId, Guid userId)
+        {
+            var storeOwner = await _repository.FindAsync(x => x.OwnerId == userId && x.StoreId == storeId, false);
+
+            return storeOwner != null;
+        }
     }
 }

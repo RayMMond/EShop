@@ -10,9 +10,5 @@ namespace EasyAbp.EShop.Stores.Stores
         Task<Store> CreateAsync(Store store, IEnumerable<Guid> ownerIds = null);
 
         Task<Store> UpdateAsync(Store store, IEnumerable<Guid> ownerIds = null);
-
-        Task DeleteAsync(Store store);
-
-        Task DeleteAsync(Guid id);
     }
 }

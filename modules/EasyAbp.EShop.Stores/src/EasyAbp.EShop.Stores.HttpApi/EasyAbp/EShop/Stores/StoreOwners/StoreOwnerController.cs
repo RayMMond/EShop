@@ -9,7 +9,7 @@ namespace EasyAbp.EShop.Stores.StoreOwners
 {
     [RemoteService(Name = "EShopStores")]
     [Route("/api/eShop/stores/storeOwner")]
-    public class StoreOwnerController : StoresController, IStoreOwnerAppService
+    public class StoreOwnerController : StoresController
     {
         private readonly IStoreOwnerAppService _service;
 
