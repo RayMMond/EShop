@@ -1,6 +1,7 @@
 using EasyAbp.EShop.Plugins.StoreApproval.Permissions;
 using EasyAbp.EShop.Plugins.StoreApproval.StoreApplications.Dtos;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -9,7 +10,7 @@ using Volo.Abp.Identity;
 
 namespace EasyAbp.EShop.Plugins.StoreApproval.StoreApplications
 {
-    public class StoreApplicationAppService : CrudAppService<StoreApplication, StoreApplicationDto, Guid, PagedAndSortedResultRequestDto, CreateStoreApplicationDto, UpdateStoreApplicationDto>,
+    public class StoreApplicationAppService : CrudAppService<StoreApplication, StoreApplicationDto, Guid, GetStoreApplicationListDto, CreateStoreApplicationDto, UpdateStoreApplicationDto>,
         IStoreApplicationAppService
     {
         protected IdentityUserManager UserManager;
@@ -24,6 +25,43 @@ namespace EasyAbp.EShop.Plugins.StoreApproval.StoreApplications
             IdentityUserManager userManager) : base(repository)
         {
             UserManager = userManager;
+        }
+
+        protected override IQueryable<StoreApplication> CreateFilteredQuery(GetStoreApplicationListDto input)
+        {
+            var queryable = base.CreateFilteredQuery(input);
+
+            if (input.ApplicantId.HasValue)
+            {
+                queryable = queryable.Where(x => x.ApplicantId == input.ApplicantId.Value);
+            }
+
+            if (!input.Name.IsNullOrWhiteSpace())
+            {
+                queryable = queryable.Where(x => x.Name == input.Name);
+            }
+
+            if (!input.StoreName.IsNullOrWhiteSpace())
+            {
+                queryable = queryable.Where(x => x.StoreName == input.StoreName);
+            }
+
+            if (!input.BusinessCategory.IsNullOrWhiteSpace())
+            {
+                queryable = queryable.Where(x => x.BusinessCategory == input.BusinessCategory);
+            }
+
+            if (!input.IdNumber.IsNullOrWhiteSpace())
+            {
+                queryable = queryable.Where(x => x.IdNumber == input.IdNumber);
+            }
+
+            if (!input.UnifiedCreditCode.IsNullOrWhiteSpace())
+            {
+                queryable = queryable.Where(x => x.UnifiedCreditCode == input.UnifiedCreditCode);
+            }
+
+            return queryable;
         }
 
         public override async Task<StoreApplicationDto> CreateAsync(CreateStoreApplicationDto input)

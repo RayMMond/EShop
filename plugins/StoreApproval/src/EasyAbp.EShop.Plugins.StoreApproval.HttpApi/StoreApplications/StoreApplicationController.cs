@@ -8,7 +8,7 @@ using Volo.Abp;
 namespace EasyAbp.EShop.Plugins.StoreApproval.StoreApplications
 {
     [RemoteService(Name = "StoreApprovalStoreApplication")]
-    [Route("/api/storeApproval/storeApplication")]
+    [Route("/api/eShop/storeApproval/storeApplication")]
     public class StoreApplicationController : StoreApprovalController, IStoreApplicationAppService
     {
         private readonly IStoreApplicationAppService _service;
@@ -26,7 +26,7 @@ namespace EasyAbp.EShop.Plugins.StoreApproval.StoreApplications
         }
 
         [HttpGet]
-        public virtual Task<PagedResultDto<StoreApplicationDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<StoreApplicationDto>> GetListAsync(GetStoreApplicationListDto input)
         {
             return _service.GetListAsync(input);
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EasyAbp.EShop.Plugins.StoreApproval.StoreApplications;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
@@ -17,6 +18,8 @@ namespace EasyAbp.EShop.Plugins.StoreApproval.EntityFrameworkCore
                 /* Add custom repositories here. Example:
                  * options.AddRepository<Question, EfCoreQuestionRepository>();
                  */
+
+                options.AddRepository<StoreApplication, EfCoreStoreApplicationRepository>();
             });
         }
     }

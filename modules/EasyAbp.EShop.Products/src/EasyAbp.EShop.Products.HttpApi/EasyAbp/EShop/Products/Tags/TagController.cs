@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 namespace EasyAbp.EShop.Products.Tags
 {
     [RemoteService(Name = "TagService")]
-    [Route("/api/products/tag")]
+    [Route("/api/eShop/products/tag")]
     public class TagController : ProductsController, ITagAppService
     {
         private readonly ITagAppService _service;
