@@ -18,6 +18,7 @@ namespace EasyAbp.EShop.Products.Permissions
             categories.AddChild(ProductsPermissions.Categories.Create, L("Permission:Create"));
             categories.AddChild(ProductsPermissions.Categories.Update, L("Permission:Update"));
             categories.AddChild(ProductsPermissions.Categories.Delete, L("Permission:Delete"));
+            categories.AddChild(ProductsPermissions.Categories.ShowHidden, L("Permission:ShowHidden"));
 
             var tags = moduleGroup.AddPermission(ProductsPermissions.Tags.Default, L("Permission:Tag"));
             tags.AddChild(ProductsPermissions.Tags.Create, L("Permission:Create"));
